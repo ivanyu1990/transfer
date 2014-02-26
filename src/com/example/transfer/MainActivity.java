@@ -165,6 +165,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 
 				String district = null;
 				String address = null;
+				String lat = null;
+				String log = null;
 				// If Google Play Services is available
 				if (servicesConnected()) {
 
@@ -183,6 +185,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 								+ ","
 								+ curloc[1].trim()
 								+ "&sensor=true&language=zh-TW";
+						lat = curloc[0].trim();
+						log = curloc[1].trim();
 						JSONParser jsp = new JSONParser();
 						Log.i("hihihi",
 								"Helloken http://maps.googleapis.com/maps/api/geocode/json?latlng="
@@ -407,6 +411,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 							dbh.close();
 							Intent i = new Intent(v.getContext(),
 									GovActivity.class);
+							i.putExtra("lag", lat);
+							i.putExtra("log", log);
 							i.putExtra("temp", districtTemp);
 							i.putExtra("district", district);
 							i.putExtra("address", address);

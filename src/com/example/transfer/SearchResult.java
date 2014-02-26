@@ -101,6 +101,8 @@ public class SearchResult extends FragmentActivity {
 
 		DBHelper dbh = new DBHelper(this);
 		Cursor c = dbh.getKen(getIntent().getExtras().get("type").toString());
+
+		c.moveToFirst();
 		while (c.moveToNext()) {
 			if (c.getString(c.getColumnIndex("DISTRICT")).equals(
 					getIntent().getExtras().get("district").toString())) {

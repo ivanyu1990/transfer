@@ -323,6 +323,23 @@ public class Sildermenu extends FragmentActivity {
 		DBHelper dbh = new DBHelper(this);
 		// Cursor c = dbh.getKen(cat);
 		Cursor c = dbh.getKen(cat);
+		
+		c.moveToFirst();
+		
+		Log.i("i",
+				"HelloKen" + c.getString(c.getColumnIndex("DISTRICT"))
+						+ c.getString(c.getColumnIndex("LAT"))
+						+ c.getString(c.getColumnIndex("LONG")));
+		String temp = c.getString(c.getColumnIndex("DISTRICT"));
+		LatLng hk = new LatLng(Double.parseDouble(""
+				+ c.getString(c.getColumnIndex("LAT"))),
+				Double.parseDouble(""
+						+ c.getString(c.getColumnIndex("LONG"))));
+		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hk, 13));
+		mMap.addMarker(new MarkerOptions().position(hk)
+				.title(c.getString(c.getColumnIndex("CHINAME")))
+				.snippet(c.getString(c.getColumnIndex("DISTRICT"))));
+		
 		while (c.moveToNext()) {
 			//if (c.getString(c.getColumnIndex("DISTRICT")).equals(district)) {
 			//please do district comparision in english
@@ -330,14 +347,14 @@ public class Sildermenu extends FragmentActivity {
 						"HelloKen" + c.getString(c.getColumnIndex("DISTRICT"))
 								+ c.getString(c.getColumnIndex("LAT"))
 								+ c.getString(c.getColumnIndex("LONG")));
-				String temp = c.getString(c.getColumnIndex("DISTRICT"));
+				//String temp = c.getString(c.getColumnIndex("DISTRICT"));
 
-				LatLng hk = new LatLng(Double.parseDouble(""
+				LatLng hk2 = new LatLng(Double.parseDouble(""
 						+ c.getString(c.getColumnIndex("LAT"))),
 						Double.parseDouble(""
 								+ c.getString(c.getColumnIndex("LONG"))));
 				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hk, 13));
-				mMap.addMarker(new MarkerOptions().position(hk)
+				mMap.addMarker(new MarkerOptions().position(hk2)
 						.title(c.getString(c.getColumnIndex("CHINAME")))
 						.snippet(c.getString(c.getColumnIndex("DISTRICT"))));
 				// updateMaker(0);
