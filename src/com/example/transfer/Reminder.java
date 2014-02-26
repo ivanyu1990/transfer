@@ -25,6 +25,7 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,10 +45,11 @@ import com.actionbarsherlock.view.MenuItem;
 
 @SuppressLint("NewApi")
 public class Reminder extends SherlockListActivity {
+	private String district;
+	private String type;
 	private int mYear;
 	private int mMonth;
 	private int mDay;
-
 	private int mhour;
 	private int mminute;
 	private ArrayList<String> mStrings = new ArrayList<String>();
@@ -56,6 +58,8 @@ public class Reminder extends SherlockListActivity {
 			.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
 			+ "/";
 	public static MediaPlayer mSound;
+	private static Context context;
+
 	Date myDate;
 
 	@Override
@@ -73,6 +77,7 @@ public class Reminder extends SherlockListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// setTheme(SampleList.THEME); // Used for theme switching in samples
 		super.onCreate(savedInstanceState);
+		Reminder.context = getApplicationContext();
 
 		File file = new File(dir, "myfile.kenken");
 
@@ -211,7 +216,7 @@ public class Reminder extends SherlockListActivity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case 1:
-			
+
 			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
 					mDay);
 
@@ -329,19 +334,71 @@ public class Reminder extends SherlockListActivity {
 
 	}
 
-	private void showMyDialogList(CharSequence[] items) {
+	private void showMyDialogList(final CharSequence[] items) {
 
+		final CharSequence[] arena = { "羽毛球場", "籃球場", "游泳池", "乒乓球場", "網球場",
+				"健身室", "高爾夫球場", "攀石場" };
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Make your selection");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				// Do something with the selection
+				district = items[item].toString();
+				showMyTypeList(arena);
+				// showDialog(1);
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
 
+	private void showMyTypeList(final CharSequence[] items) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Make your selection");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				// Do something with the selection
+				type = items[item].toString();
+				Log.i("i",
+						Search.switchDistrict(district) + " "
+								+ Search.switchTable(type));
+
+				DBHelper dbh = new DBHelper(Reminder.context);
+				Cursor c = dbh.getKen(Search.switchTable(type));
+				c.moveToFirst();
+				ArrayList<String> list = new ArrayList<String>();
+				while (c.moveToNext()) {
+					// list.add
+					if (c.getString(c.getColumnIndex("DISTRICT")).equals(
+							Search.switchDistrict(district))) {// &&
+																// c.getString(c.getColumnIndex("type")).equals(Search.switchTable(type))){
+						list.add(c.getString(c.getColumnIndex("CHINAME")));
+					}
+				}
+				CharSequence[] cs = list.toArray(new CharSequence[list.size()]);
+				showChoice(cs);
+				// showDialog(1);
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	private void showChoice(final CharSequence[] items) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Make your selection");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				// Do something with the selection
 				showDialog(1);
 			}
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
+	}
+
+	public static Context getAppContext() {
+		return Reminder.context;
 	}
 
 }

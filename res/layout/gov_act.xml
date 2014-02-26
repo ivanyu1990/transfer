@@ -63,20 +63,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="10"
-        android:background="#000000"
+         android:background="#F9B03D"
         android:fillViewport="true"
         android:weightSum="3.0" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:background="#FFC073"
             android:orientation="horizontal"
             android:weightSum="9.0" >
 
             <Button
                 android:id="@+id/button_n1"
+               
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_gravity="left"
@@ -113,58 +115,66 @@
     </HorizontalScrollView>
 
     <HorizontalScrollView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="4"
-        android:background="#000000"
+        android:background="#F9B03D"
         android:fillViewport="true"
+        
+        
         android:weightSum="1.0" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_marginTop="20dp"
-            android:layout_weight="1"
+            
+            android:layout_weight="8"
             android:orientation="horizontal"
             android:weightSum="8.0" >
 
             <Button
                 android:id="@+id/button_a"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="left"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_weight="2.0"
-                android:text="Reminder"
-                android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/button_c"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 android:layout_marginLeft="3dp"
+                android:background="@drawable/new_button"
+                android:textColor="@android:color/white" />
+            
+              <Button
+                android:id="@+id/button_c"
+                android:layout_width="74dp"
+                android:layout_height="74dp"          
+                android:layout_marginLeft="0dp"
                 android:layout_weight="2.0"
                 android:onClick="clickButtonC"
-                android:text="Closest\nFacilities"
+                android:background="@drawable/mapbutton"
+                android:text=""
                 android:textColor="@android:color/white" />
+              
+              
+          
 
             <Button
                 android:id="@+id/button_b"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
                 android:layout_gravity="right"
-                android:layout_marginLeft="3dp"
+                android:layout_marginLeft="0dp"
                 android:layout_weight="2.0"
                 android:onClick="clickButtonB"
-                android:text="Button 2 \n oop"
+                android:background="@drawable/search"
+                
                 android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/button_d"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
                 android:layout_marginLeft="3dp"
                 android:layout_weight="2.0"
-                android:text="Button 3 \noopq\nqqqqq"
+                android:background="@drawable/settings"
                 android:textColor="@android:color/white" />
 		 
         </LinearLayout>

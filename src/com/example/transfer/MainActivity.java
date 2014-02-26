@@ -170,6 +170,12 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 				// If Google Play Services is available
 				if (servicesConnected()) {
 
+					startPeriodicUpdates();
+					try {
+						Thread.sleep(5000);
+					} catch (Exception e){
+						
+					}
 					// Get the current location
 					Location currentLocation = mLocationClient
 							.getLastLocation();
@@ -409,9 +415,13 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 								}
 							}
 							dbh.close();
+							WeatherDescRSSpaser wdr = new WeatherDescRSSpaser();
+							wdr.readRSS();
+							stopPeriodicUpdates();
 							Intent i = new Intent(v.getContext(),
 									GovActivity.class);
-							i.putExtra("lag", lat);
+							i.putExtra("weather", wdr.getResult());
+							i.putExtra("lat", lat);
 							i.putExtra("log", log);
 							i.putExtra("temp", districtTemp);
 							i.putExtra("district", district);
@@ -419,7 +429,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 							startActivity(i);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							Log.i("i", "HelloKen " + e.getMessage());
+							Log.i("i", "HelloKen " + e.getMessage());// .getMessage());
 						}
 					}
 				}
