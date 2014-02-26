@@ -1,0 +1,173 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    android:weightSum="15" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:background="#99848484"
+            android:text="Tsing Yi \nCloudy"
+            android:textColor="@android:color/white"
+            android:textSize="27sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:background="#99848484"
+            android:gravity="right"
+            android:text="20.9°C"
+            android:textColor="@android:color/white"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:background="#000000"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.01"
+            android:background="#99848484"
+            android:gravity="center"
+            android:text="Closest Basketball Court"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="10"
+        android:background="#000000"
+        android:fillViewport="true"
+        android:weightSum="3.0" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="9.0" >
+
+            <Button
+                android:id="@+id/button_n1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="left"
+                android:layout_weight="3.0"
+                android:background="@drawable/b18"
+                android:gravity="top|center"
+                android:text="No.1"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/button_n2"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="3.0"
+                android:background="@drawable/b18"
+                android:gravity="top|center"
+                android:text="No.2"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/button_n3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="3.0"
+                android:background="@drawable/b18"
+                android:gravity="top|center"
+                android:text="No.3"
+                android:textColor="@android:color/white" />
+		 
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:background="#000000"
+        android:fillViewport="true"
+        android:weightSum="1.0" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="8.0" >
+
+            <Button
+                android:id="@+id/button_a"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="left"
+                android:layout_weight="2.0"
+                android:text="Reminder"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/button_c"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="2.0"
+                android:onClick="clickButtonC"
+                android:text="Closest\nFacilities"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/button_b"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="2.0"
+                android:onClick="clickButtonB"
+                android:text="Button 2 \n oop"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/button_d"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="2.0"
+                android:text="Button 3 \noopq\nqqqqq"
+                android:textColor="@android:color/white" />
+		 
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

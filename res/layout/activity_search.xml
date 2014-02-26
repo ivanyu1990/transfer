@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/country_arrays"
+        android:prompt="@string/country_prompt" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+	<LinearLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" 
+	    android:weightSum="2.0">
+
+	    <Button
+	        android:id="@+id/btnSubmit"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:text="Submit with text result" />
+
+	    <Button
+	        android:id="@+id/btnSubmit2"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:onClick = "mapResults"
+	        android:text="Search with map results" />
+
+	</LinearLayout>
+    
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxLines="6"
+        android:paddingTop="10dip"
+        android:scrollbars="vertical"
+        android:text=""
+        android:textSize="25sp" />
+
+</LinearLayout>
