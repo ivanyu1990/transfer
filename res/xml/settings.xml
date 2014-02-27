@@ -20,7 +20,7 @@
             android:key="prefSyncFrequency"
             android:entries="@array/syncFrequency"
             android:summary="@string/pref_sync_frequency_summary" 
-            android:entryValues="@array/syncFrequencyValues"
+            android:entryValues="@array/syncFrequency"
             android:title="@string/pref_sync_frequency" />
     </PreferenceCategory>
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.util.FloatMath;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Point;
 
@@ -25,13 +27,20 @@ public class GovActivity extends Activity {
 	private Button no1;
 	private Button no2;
 	private Button no3;
+	private String facility = "籃球場";
 	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+	TextView facilityTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gov_act);
+		facilityTextView = (TextView) findViewById(R.id.textView3);
+		if (!facilityTextView.getText().toString().contains(facility)) {
+			facilityTextView.setText("最近的" + facility);
+			Log.i("i", facilityTextView.getText() + "");
+		}
 		try {
 			Log.i("i", getIntent().getExtras().get("temp").toString());
 			Log.i("i", getIntent().getExtras().get("district").toString());
@@ -46,7 +55,7 @@ public class GovActivity extends Activity {
 
 			ArrayList<LocationKenKen> closestLoc = new ArrayList<LocationKenKen>();
 			DBHelper dbh = new DBHelper(this);
-			Cursor c = dbh.getKen(("BASKET_COURT").toString());
+			Cursor c = dbh.getKen((Search.switchTable(facility)).toString());
 
 			float lat = Float.parseFloat(getIntent().getExtras().get("lat")
 					.toString());
@@ -318,5 +327,110 @@ public class GovActivity extends Activity {
 		}
 
 		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+		case 1:
+			showUserSettings();
+			break;
+
+		}
+
+	}
+
+	private void showUserSettings() {
+		SharedPreferences sharedPrefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		StringBuilder builder = new StringBuilder();
+
+		Log.i("\n Username: ", sharedPrefs.getString("prefUsername", "NULL"));
+
+		Log.i("i",
+				"\n Send report:"
+						+ sharedPrefs.getBoolean("prefSendReport", false));
+
+		Log.i("i",
+				"\n Sync Frequency: "
+						+ sharedPrefs.getString("prefSyncFrequency", "NULL"));
+		facility = sharedPrefs.getString("prefSyncFrequency", "NULL");
+
+		// TextView settingsTextView = (TextView)
+		// findViewById(R.id.textUserSettings);
+
+		facilityTextView.setText("最近的" + facility);
+		((Button) findViewById(R.id.button_n1))
+				.setBackgroundResource(chiToEngName(facility));
+		((Button) findViewById(R.id.button_n2))
+				.setBackgroundResource(chiToEngName(facility));
+		((Button) findViewById(R.id.button_n3))
+				.setBackgroundResource(chiToEngName(facility));
+
+		ArrayList<LocationKenKen> closestLoc = new ArrayList<LocationKenKen>();
+		DBHelper dbh = new DBHelper(this);
+		Cursor c = dbh.getKen((Search.switchTable(facility)).toString());
+
+		float lat = Float.parseFloat(getIntent().getExtras().get("lat")
+				.toString());
+		float log = Float.parseFloat(getIntent().getExtras().get("log")
+				.toString());
+
+		// gps2m(lat, log, float lat_b, float lng_b)
+		// double min = 99999999;
+
+		while (c.moveToNext()) {
+			// if (c.getString(c.getColumnIndex("DISTRICT")).equals(
+			// getIntent().getExtras().get("district").toString())) {
+
+			String locationLat = c.getString(c.getColumnIndex("LAT"));
+			String locationLong = c.getString(c.getColumnIndex("LONG"));
+			String chi = c.getString(c.getColumnIndex("CHINAME"));
+			String e = c.getString(c.getColumnIndex("ENGNAME"));
+			String d = c.getString(c.getColumnIndex("DISTRICT"));
+
+			// LocationKenKen
+			double dis = gps2m(lat, log, Float.parseFloat(locationLat),
+					Float.parseFloat(locationLong));
+
+			closestLoc.add(new LocationKenKen(Float.parseFloat(locationLat),
+					Float.parseFloat(locationLong), dis, chi, d));
+
+			// }
+		}
+
+		Collections.sort(closestLoc);
+		for (int i = 0; i < 3; i++)
+			Log.i("i", closestLoc.get(i).toString());
+
+		no1.setText(niceString(closestLoc.get(0).getChiname()));
+		no2.setText(niceString(closestLoc.get(1).getChiname()));
+		no3.setText(niceString(closestLoc.get(2).getChiname()));
+		// settingsTextView.setText(builder.toString());
+	}
+
+	private int chiToEngName(String s) {
+		String temp = null;
+		if (s.equals("羽毛球場")) {
+			return R.drawable.badminton;
+		} else if (s.equals("籃球場")) {
+			return R.drawable.b18;
+		} else if (s.equals("游泳池")) {
+			return R.drawable.swimmingpool;
+		} else if (s.equals("乒乓球場")) {
+			return R.drawable.tabletennis;
+		} else if (s.equals("網球場")) {
+			return R.drawable.tennis;
+		} else if (s.equals("高爾夫球場")) {
+			return R.drawable.golf;
+		} else if (s.equals("攀石場")) {
+			return R.drawable.climbwall;
+		} else if (s.equals("健身室")){
+			return R.drawable.gym;
+		}
+		return -1;
 	}
 }

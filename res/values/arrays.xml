@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string-array name="syncFrequency">
-        <item name="1">Once a day</item>
-        <item name="7">Once a week</item>
-        <item name="3">Once a year</item>
-        <item name="0">Never (Update maually)</item>
+        <item>羽毛球場</item>
+        <item>籃球場</item>
+        <item>游泳池</item>
+        <item>乒乓球場</item>
+        <item>網球場</item>
+        <item>健身室</item>
+        <item>高爾夫球場</item>
+        <item>攀石場</item>
     </string-array>
+    <!--  
+		list.add("羽毛球場");
+		list.add("籃球場");
+		list.add("游泳池");
+		list.add("乒乓球場");
+		list.add("網球場");
+		list.add("健身室");
+		list.add("高爾夫球場");
+		list.add("攀石場");-->
+	
 	<string-array name="syncFrequencyValues">
         <item name="1">1</item>
         <item name="7">7</item>

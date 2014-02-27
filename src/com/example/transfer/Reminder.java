@@ -152,7 +152,21 @@ public class Reminder extends SherlockListActivity {
 	// time----------------------------------------//
 	public void updatetime() {
 		myDate = new Date(mYear, mMonth, mDay, mhour, mminute);
-		if (!mStrings.contains(myDate.toString())) {
+		if (!mStrings.contains(district
+				+ " "
+				+ type
+				+ " "
+				+ arena
+				+ myDate.getYear()
+				+ "/"
+				+ myDate.getMonth()
+				+ "/"
+				+ myDate.getDay()
+				+ " "
+				+ myDate.getHours()
+				+ ":"
+				+ ((myDate.getMinutes() + "").length() == 1 ? "0"
+						+ myDate.getMinutes() : myDate.getMinutes()))) {
 			mStrings.add(district
 					+ " "
 					+ type

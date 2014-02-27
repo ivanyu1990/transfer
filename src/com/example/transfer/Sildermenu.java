@@ -70,9 +70,9 @@ public class Sildermenu extends FragmentActivity {
 		mTitle = mDrawerTitle = getTitle();
 		mPlanetTitles = getResources().getStringArray(R.array.planets_array);
 		// added====
-		String[] mymPlanetTitles2 = { "Tennis", "Basketball", "Badminton",
-				"Climbing Wall", "Golf", "Table Tennis", "Fittness Room",
-				"Swimming Pool" };
+		String[] mymPlanetTitles2 = { "網球場", "籃球場", "羽毛球場",
+				"攀石場", "高爾夫球場", "乒乓球場", "健身室",
+				"游泳池" };
 		String[] mymPlanetTitles2mapping = { "TENNIS_COURT", "BASKET_COURT",
 				"BADMINTON", "CLIMB", "GOLF", "TABLE_TENNIS", "FITNESS",
 				"SWIMMING_POOL" };
@@ -157,15 +157,16 @@ public class Sildermenu extends FragmentActivity {
 		switch (item.getItemId()) {
 		case R.id.action_websearch:
 			// create intent to perform web search for this planet
-			Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-			intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+			//Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+			//intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
 			// catch event that there's no activity to handle intent
-			if (intent.resolveActivity(getPackageManager()) != null) {
+			/*if (intent.resolveActivity(getPackageManager()) != null) {
 				startActivity(intent);
 			} else {
 				Toast.makeText(this, R.string.app_not_available,
 						Toast.LENGTH_LONG).show();
-			}
+			}*/
+			startActivity(new Intent(this, Search.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

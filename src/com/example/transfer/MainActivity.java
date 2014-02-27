@@ -18,6 +18,7 @@ package com.example.transfer;
 
 //import com.example.android.location.LocationUtils;
 
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -44,6 +45,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -100,7 +102,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 	private Handler handler = new Handler();
 	// Handle to SharedPreferences for this app
 	SharedPreferences mPrefs;
-
+	GPSTracker gps;
+	
 	// Handle to a SharedPreferences editor
 	SharedPreferences.Editor mEditor;
 
@@ -117,6 +120,10 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
 		setContentView(R.layout.activity_main);
 
 		if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -215,6 +222,20 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 			@Override
 			public void onClick(View v) {
 
+				gps = new GPSTracker(MainActivity.this);
+				 if(gps.canGetLocation()){
+			        		        	
+			        	// \n is for new line
+			        	//Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();	
+			        }else{
+			        	// can't get location
+			        	// GPS or Network is not enabled
+			        	// Ask user to enable GPS/network in settings
+			        	gps.showSettingsAlert();
+			        }
+				
+				
+				
 				String district = null;
 				String address = null;
 				String lat = null;
