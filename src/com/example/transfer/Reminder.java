@@ -68,7 +68,7 @@ public class Reminder extends SherlockListActivity {
 		// Used to put dark icons on light action bar
 
 		boolean isLight = SampleList.THEME == R.style.Theme_Sherlock;
-		menu.add("Save").setTitle("Add event")
+		menu.add("Save").setTitle("新增事件")
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		return true;
@@ -84,8 +84,8 @@ public class Reminder extends SherlockListActivity {
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			android.app.ActionBar ab = getActionBar();
-			ab.setTitle("Reminder");
-			ab.setSubtitle("Simply add an event here");
+			ab.setTitle("備忘錄");
+			//ab.setSubtitle("Simply add an event here");
 			ab.setIcon(R.color.abs__background_holo_dark);
 		}
 
