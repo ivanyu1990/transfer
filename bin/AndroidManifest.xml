@@ -38,6 +38,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:allowBackup="true"
@@ -57,7 +58,6 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name="com.example.transfer.DisplayMessageActivity"
             android:label="@string/title_activity_display_message"
@@ -79,12 +79,11 @@
         </activity>
         <activity android:name="com.example.transfer.Datepicker" >
         </activity>
-
         <activity android:name="com.example.transfer.Search" >
         </activity>
-        
         <activity android:name="com.example.transfer.SearchResult" >
         </activity>
+        <activity android:name="com.example.transfer.UserSettingActivity" />
         
         <activity
             android:name="com.example.transfer.SplashScreen"
@@ -97,9 +96,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver
             android:name=".AlarmReceiver"
-            android:process=":remote" />
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name="com.example.transfer.ReceiveUpdatesIntentService"

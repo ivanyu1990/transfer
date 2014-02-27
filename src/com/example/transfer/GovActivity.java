@@ -9,6 +9,7 @@ import android.util.FloatMath;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -31,65 +32,71 @@ public class GovActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gov_act);
-		Log.i("i", getIntent().getExtras().get("temp").toString());
-		Log.i("i", getIntent().getExtras().get("district").toString());
+		try {
+			Log.i("i", getIntent().getExtras().get("temp").toString());
+			Log.i("i", getIntent().getExtras().get("district").toString());
 
-		TextView tv = (TextView) findViewById(R.id.textView2);
-		tv.setText(getIntent().getExtras().get("temp").toString() + "°C");
-		TextView tv1 = (TextView) findViewById(R.id.textView1);
-		tv1.setText(getIntent().getExtras().get("district").toString() + " "
-				+ getIntent().getExtras().get("weather").toString() + "\n估計位置:"
-				+ getIntent().getExtras().get("address").toString());
+			TextView tv = (TextView) findViewById(R.id.textView2);
+			tv.setText(getIntent().getExtras().get("temp").toString() + "°C");
+			TextView tv1 = (TextView) findViewById(R.id.textView1);
+			tv1.setText(getIntent().getExtras().get("district").toString()
+					+ " " + getIntent().getExtras().get("weather").toString()
+					+ "\n估計位置:"
+					+ getIntent().getExtras().get("address").toString());
 
-		ArrayList<LocationKenKen> closestLoc = new ArrayList<LocationKenKen>();
-		DBHelper dbh = new DBHelper(this);
-		Cursor c = dbh.getKen(("BASKET_COURT").toString());
+			ArrayList<LocationKenKen> closestLoc = new ArrayList<LocationKenKen>();
+			DBHelper dbh = new DBHelper(this);
+			Cursor c = dbh.getKen(("BASKET_COURT").toString());
 
-		float lat = Float.parseFloat(getIntent().getExtras().get("lat")
-				.toString());
-		float log = Float.parseFloat(getIntent().getExtras().get("log")
-				.toString());
+			float lat = Float.parseFloat(getIntent().getExtras().get("lat")
+					.toString());
+			float log = Float.parseFloat(getIntent().getExtras().get("log")
+					.toString());
 
-		// gps2m(lat, log, float lat_b, float lng_b)
-		// double min = 99999999;
+			// gps2m(lat, log, float lat_b, float lng_b)
+			// double min = 99999999;
 
-		while (c.moveToNext()) {
-			// if (c.getString(c.getColumnIndex("DISTRICT")).equals(
-			// getIntent().getExtras().get("district").toString())) {
+			while (c.moveToNext()) {
+				// if (c.getString(c.getColumnIndex("DISTRICT")).equals(
+				// getIntent().getExtras().get("district").toString())) {
 
-			String locationLat = c.getString(c.getColumnIndex("LAT"));
-			String locationLong = c.getString(c.getColumnIndex("LONG"));
-			String chi = c.getString(c.getColumnIndex("CHINAME"));
-			String e = c.getString(c.getColumnIndex("ENGNAME"));
-			String d = c.getString(c.getColumnIndex("DISTRICT"));
+				String locationLat = c.getString(c.getColumnIndex("LAT"));
+				String locationLong = c.getString(c.getColumnIndex("LONG"));
+				String chi = c.getString(c.getColumnIndex("CHINAME"));
+				String e = c.getString(c.getColumnIndex("ENGNAME"));
+				String d = c.getString(c.getColumnIndex("DISTRICT"));
 
-			// LocationKenKen
-			double dis = gps2m(lat, log, Float.parseFloat(locationLat),
-					Float.parseFloat(locationLong));
+				// LocationKenKen
+				double dis = gps2m(lat, log, Float.parseFloat(locationLat),
+						Float.parseFloat(locationLong));
 
-			closestLoc.add(new LocationKenKen(Float.parseFloat(locationLat),
-					Float.parseFloat(locationLong), dis, chi, d));
+				closestLoc.add(new LocationKenKen(
+						Float.parseFloat(locationLat), Float
+								.parseFloat(locationLong), dis, chi, d));
 
-			// }
+				// }
+			}
+
+			Collections.sort(closestLoc);
+			for (int i = 0; i < 3; i++)
+				Log.i("i", closestLoc.get(i).toString());
+
+			// tv1.setText(getIntent().getExtras().get("district").toString() );
+			n1 = (Button) findViewById(R.id.button_n1);
+			a = (Button) findViewById(R.id.button_a);
+			n1.setOnClickListener(buttonAddOnClickListener);
+			a.setOnClickListener(buttonAddOnClickListener);
+
+			no1 = (Button) findViewById(R.id.button_n1);
+			no2 = (Button) findViewById(R.id.button_n2);
+			no3 = (Button) findViewById(R.id.button_n3);
+			Log.i("i", closestLoc.get(0).getChiname());
+			no1.setText(niceString(closestLoc.get(0).getChiname()));
+			no2.setText(niceString(closestLoc.get(1).getChiname()));
+			no3.setText(niceString(closestLoc.get(2).getChiname()));
+		} catch (Exception e) {
+
 		}
-
-		Collections.sort(closestLoc);
-		for (int i = 0; i < 3; i++)
-			Log.i("i", closestLoc.get(i).toString());
-
-		// tv1.setText(getIntent().getExtras().get("district").toString() );
-		n1 = (Button) findViewById(R.id.button_n1);
-		a = (Button) findViewById(R.id.button_a);
-		n1.setOnClickListener(buttonAddOnClickListener);
-		a.setOnClickListener(buttonAddOnClickListener);
-
-		no1 = (Button) findViewById(R.id.button_n1);
-		no2 = (Button) findViewById(R.id.button_n2);
-		no3 = (Button) findViewById(R.id.button_n3);
-		Log.i("i", closestLoc.get(0).getChiname());
-		no1.setText(niceString(closestLoc.get(0).getChiname()));
-		no2.setText(niceString(closestLoc.get(1).getChiname()));
-		no3.setText(niceString(closestLoc.get(2).getChiname()));
 	}
 
 	Button.OnClickListener buttonAddOnClickListener = new Button.OnClickListener() {
@@ -121,8 +128,7 @@ public class GovActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.settings, menu);
 		return true;
 	}
 
@@ -291,7 +297,26 @@ public class GovActivity extends Activity {
 
 		}
 	}
-	
-	public void onBackPressed(){
+
+	public void onBackPressed() {
+	}
+
+	public void settingPage(View v) {
+		Intent i = new Intent(this, UserSettingActivity.class);
+		startActivityForResult(i, 1);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		case R.id.menu_settings:
+			Intent i = new Intent(this, UserSettingActivity.class);
+			startActivityForResult(i, 1);
+			break;
+
+		}
+
+		return true;
 	}
 }

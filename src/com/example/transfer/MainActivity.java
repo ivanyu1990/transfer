@@ -17,6 +17,7 @@
 package com.example.transfer;
 
 //import com.example.android.location.LocationUtils;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -31,6 +32,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -82,7 +84,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 
 	// A request to connect to Location Services
 	private LocationRequest mLocationRequest;
-
+	Thread a = null;
+	Thread b = null;
 	// Stores the current instantiation of the location client in this object
 	private LocationClient mLocationClient;
 
@@ -92,7 +95,9 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 	private ProgressBar mActivityIndicator;
 	private TextView mConnectionState;
 	private TextView mConnectionStatus;
-
+	private ProgressBar progressBar;
+	private int progressStatus = 0;
+	private Handler handler = new Handler();
 	// Handle to SharedPreferences for this app
 	SharedPreferences mPrefs;
 
@@ -129,6 +134,53 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 
 		// Create a new global location parameters object
 		mLocationRequest = LocationRequest.create();
+
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		new Thread(new Runnable() {
+			public void run() {
+				while (progressStatus < 100) {
+					progressStatus += 1;
+					// Update the progress bar and display the current value in
+					// the text view
+					handler.post(new Runnable() {
+						public void run() {
+							progressBar.setProgress(progressStatus);
+							// textView.setText(progressStatus+"/"+progressBar.getMax());
+						}
+					});
+					try {
+						// Sleep for 200 milliseconds. Just to display the
+						// progress slowly
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+
+		/*b = new Thread(new Runnable() {
+			public void run() {
+				while (progressStatus < 100) {
+					// progressStatus += 1;
+					// Update the progress bar and display the current value in
+					// the text view
+					handler.post(new Runnable() {
+						public void run() {
+							progressBar.setProgress(progressStatus);
+							// textView.setText(progressStatus+"/"+progressBar.getMax());
+						}
+					});
+					// try {
+					// // Sleep for 200 milliseconds. Just to display the
+					// progress slowly
+					// Thread.sleep(200);
+					// } catch (InterruptedException e) {
+					// e.printStackTrace();
+					// }
+				}
+			}
+		});*/
 
 		/*
 		 * Set the update interval
@@ -172,14 +224,20 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 
 					startPeriodicUpdates();
 					try {
-						Thread.sleep(5000);
-					} catch (Exception e){
-						
+						a.start();
+						// Theard b = new Thread ().sleep(5000);
+
+					} catch (Exception e) {
+
 					}
 					// Get the current location
 					Location currentLocation = mLocationClient
 							.getLastLocation();
-
+					/*
+					 * Thread d = new Thread() { public void run() {
+					 * 
+					 * } };
+					 */
 					try {
 						// Display the current location in the UI
 						Log.i("i", LocationUtils.getLatLng(v.getContext(),
@@ -193,6 +251,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 								+ "&sensor=true&language=zh-TW";
 						lat = curloc[0].trim();
 						log = curloc[1].trim();
+						//progressBar.setProgress(50);
+
 						JSONParser jsp = new JSONParser();
 						Log.i("hihihi",
 								"Helloken http://maps.googleapis.com/maps/api/geocode/json?latlng="
@@ -245,6 +305,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 							// System.out.println(str);
 							String[] tdstr = str.split("<tr>");
 							for (int count = 0; count < tdstr.length; count++) {
+								// progressStatus += 1;
 								int s = tdstr[count].indexOf("<td>") + 4;
 								int e = tdstr[count].indexOf("</td>");
 								if (s > 0 && e > 0) {

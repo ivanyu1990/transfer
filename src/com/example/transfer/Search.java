@@ -2,10 +2,17 @@ package com.example.transfer;
 
 import java.util.ArrayList;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v4.app.FragmentActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -17,10 +24,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Search extends Activity {
+public class Search extends FragmentActivity {
 	private Spinner spinner1, spinner2;
 	private Button btnSubmit;
 
+	private GoogleMap mMap;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,6 +37,8 @@ public class Search extends Activity {
 		addItemsOnSpinner2();
 		addListenerOnButton();
 		addListenerOnSpinnerItemSelection();
+		
+		setUpMapIfNeeded();
 	}
 
 	@Override
@@ -59,7 +70,8 @@ public class Search extends Activity {
 
 	public void addListenerOnSpinnerItemSelection() {
 		spinner1 = (Spinner) findViewById(R.id.spinner1);
-		spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+		spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener(this));
+		spinner2.setOnItemSelectedListener(new CustomOnItemSelectedListener(this));
 	}
 
 	// get the selected dropdown list value
@@ -67,10 +79,10 @@ public class Search extends Activity {
 
 		spinner1 = (Spinner) findViewById(R.id.spinner1);
 		spinner2 = (Spinner) findViewById(R.id.spinner2);
-		btnSubmit = (Button) findViewById(R.id.btnSubmit);
+	//	btnSubmit = (Button) findViewById(R.id.btnSubmit);
 
-		btnSubmit.setOnClickListener(new OnClickListener() {
-
+		//btnSubmit.setOnClickListener(new OnClickListener() {
+/*
 			@Override
 			public void onClick(View v) {
 				/*
@@ -86,7 +98,7 @@ public class Search extends Activity {
 				 * "\nSpinner 2 : "+
 				 * switchTable(String.valueOf(spinner2.getSelectedItem()))+ "\n"
 				 * + sql, Toast.LENGTH_SHORT).show();
-				 */
+				 
 				DBHelper dbh = new DBHelper(v.getContext());
 				Cursor c = dbh.getKen(switchTable(String.valueOf(spinner2
 						.getSelectedItem())));
@@ -109,7 +121,7 @@ public class Search extends Activity {
 				dbh.close();
 			}
 
-		});
+		});*/
 	}
 
 	public static String switchDistrict(String temp) {
@@ -181,18 +193,61 @@ public class Search extends Activity {
 	}
 
 	public void mapResults(View v) {
-		DBHelper dbh = new DBHelper(v.getContext());
-		Cursor c = dbh.getKen(switchTable(String.valueOf(spinner2
-				.getSelectedItem())));
+	//	DBHelper dbh = new DBHelper(v.getContext());
+		//Cursor c = dbh.getKen(switchTable(String.valueOf(spinner2
+		//		.getSelectedItem())));
 		// TextView tv1 = (TextView) findViewById(R.id.tv1);
 		// tv1.setText("");
 		// tv1.setMovementMethod(new ScrollingMovementMethod());
-		Intent i = new Intent(v.getContext(), SearchResult.class);
+		//Intent i = new Intent(v.getContext(), SearchResult.class);
 		// i.putStringArrayListExtra("chiname", chiname);
-		i.putExtra("type",
-				switchTable(String.valueOf(spinner2.getSelectedItem())));
-		i.putExtra("district",
-				switchDistrict(String.valueOf(spinner1.getSelectedItem())));
-		startActivity(i);
+		//i.putExtra("type",
+		//		switchTable(String.valueOf(spinner2.getSelectedItem())));
+		//i.putExtra("district",
+		//		switchDistrict(String.valueOf(spinner1.getSelectedItem())));
+		//startActivity(i);
+		mMap.clear();
+		DBHelper dbh = new DBHelper(v.getContext());
+		Cursor c = dbh.getKen(switchTable(String.valueOf(spinner2.getSelectedItem())));
+
+		c.moveToFirst();
+		while (c.moveToNext()) {
+			if (c.getString(c.getColumnIndex("DISTRICT")).equals(
+					switchDistrict(String.valueOf(spinner1.getSelectedItem())))) {
+				LatLng hk = new LatLng(Double.parseDouble(c.getString(c
+						.getColumnIndex("LAT"))), Double.parseDouble(c
+						.getString(c.getColumnIndex("LONG"))));
+				// Double.parseDouble(temp[3]));
+				mMap.addMarker(new MarkerOptions().position(hk)
+						.title(c.getString(c.getColumnIndex("CHINAME")))
+						.snippet(c.getString(c.getColumnIndex("DISTRICT"))));// .title(temp[1])
+				// .snippet(temp[4]));
+
+				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hk, 13));
+			}
+		}
+		dbh.close();
+	}
+//========	
+	private void setUpMapIfNeeded() {
+		// Do a null check to confirm that we have not already instantiated the
+		// map.
+		if (mMap == null) {
+			// Try to obtain the map from the SupportMapFragment.
+			mMap = ((SupportMapFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.map)).getMap();
+			// Check if we were successful in obtaining the map.
+			if (mMap != null) {
+				setUpMap();
+			}
+		}
+	}
+	
+	private void setUpMap() {
+		
+	}
+	
+	private void updateMaker(int in_position) {
+	
 	}
 }

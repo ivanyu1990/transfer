@@ -22,23 +22,19 @@
 	    android:orientation="horizontal" 
 	    android:weightSum="2.0">
 
-	    <Button
-	        android:id="@+id/btnSubmit"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:text="Submit with text result" />
-
-	    <Button
-	        android:id="@+id/btnSubmit2"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:onClick = "mapResults"
-	        android:text="Search with map results" />
-
 	</LinearLayout>
     
 
-    <TextView
+
+
+    
+    <fragment
+ 	 android:id="@+id/map"
+ 	 android:layout_width="match_parent"
+  	 android:layout_height="match_parent"
+  	 class="com.google.android.gms.maps.SupportMapFragment"/>
+    
+        <TextView
         android:id="@+id/tv1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,5 +43,4 @@
         android:scrollbars="vertical"
         android:text=""
         android:textSize="25sp" />
-
 </LinearLayout>
