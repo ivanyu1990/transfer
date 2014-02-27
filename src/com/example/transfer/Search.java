@@ -209,11 +209,15 @@ public class Search extends FragmentActivity {
 		mMap.clear();
 		DBHelper dbh = new DBHelper(v.getContext());
 		Cursor c = dbh.getKen(switchTable(String.valueOf(spinner2.getSelectedItem())));
-
+		
 		c.moveToFirst();
+		
 		while (c.moveToNext()) {
 			if (c.getString(c.getColumnIndex("DISTRICT")).equals(
 					switchDistrict(String.valueOf(spinner1.getSelectedItem())))) {
+
+
+				Log.i("i", c.getString(c.getColumnIndex("CHINAME")) + "");
 				LatLng hk = new LatLng(Double.parseDouble(c.getString(c
 						.getColumnIndex("LAT"))), Double.parseDouble(c
 						.getString(c.getColumnIndex("LONG"))));

@@ -135,11 +135,11 @@
     <string name="menu_settings">Settings</string>
     <string name="pref_set_alarm">Alarm notification</string>
     <string name="pref_set_alarm_with_sound">Alarm with Sound?</string>
-    <string name="pref_sync_frequency">Show closet facility</string>
-    <string name="pref_sync_frequency_summary">Which facility you prefer to show on the main page?</string>
+    <string name="pref_sync_frequency">最近的康樂設施</string>
+    <string name="pref_sync_frequency_summary">您希望首頁展示什麽康樂設施?</string>
     <string name="pref_user_name">Set username</string>
     <string name="pref_user_name_summary">Set your username</string>
     
     <string name="pref_user_profile">User Profile</string>
-    <string name="pref_update_setting">Update Settings</string>
+    <string name="pref_update_setting">個人設定</string>
 </resources>

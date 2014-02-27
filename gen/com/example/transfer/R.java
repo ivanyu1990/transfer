@@ -1214,9 +1214,9 @@ containing a value of this type.
         public static final int address_progress=0x7f050041;
         public static final int bgImage=0x7f05003d;
         public static final int button1=0x7f05003b;
-        public static final int button_a=0x7f05005b;
-        public static final int button_b=0x7f05005d;
-        public static final int button_c=0x7f05005c;
+        public static final int button_a=0x7f05005d;
+        public static final int button_b=0x7f05005c;
+        public static final int button_c=0x7f05005b;
         public static final int button_d=0x7f05005e;
         public static final int button_n1=0x7f050058;
         public static final int button_n2=0x7f050059;
