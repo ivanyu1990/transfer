@@ -45,6 +45,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 @SuppressLint("NewApi")
 public class Reminder extends SherlockListActivity {
+	public static int k = 1;
 	private String district;
 	private String type;
 	private String arena;
@@ -85,7 +86,7 @@ public class Reminder extends SherlockListActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			android.app.ActionBar ab = getActionBar();
 			ab.setTitle("備忘錄");
-			//ab.setSubtitle("Simply add an event here");
+			// ab.setSubtitle("Simply add an event here");
 			ab.setIcon(R.color.abs__background_holo_dark);
 		}
 
@@ -152,11 +153,14 @@ public class Reminder extends SherlockListActivity {
 	// time----------------------------------------//
 	public void updatetime() {
 		myDate = new Date(mYear, mMonth, mDay, mhour, mminute);
-		if (!mStrings.contains(district
+		if (!mStrings.contains(k
+				+ " "
+				+ district
 				+ " "
 				+ type
 				+ " "
 				+ arena
+				+ " "
 				+ myDate.getYear()
 				+ "/"
 				+ myDate.getMonth()
@@ -167,11 +171,14 @@ public class Reminder extends SherlockListActivity {
 				+ ":"
 				+ ((myDate.getMinutes() + "").length() == 1 ? "0"
 						+ myDate.getMinutes() : myDate.getMinutes()))) {
-			mStrings.add(district
+			mStrings.add(k
+					+ " "
+					+ district
 					+ " "
 					+ type
 					+ " "
 					+ arena
+					+ " "
 					+ myDate.getYear()
 					+ "/"
 					+ myDate.getMonth()
@@ -191,11 +198,14 @@ public class Reminder extends SherlockListActivity {
 				// fWriter = new FileWriter(file);
 				PrintWriter pWriter = new PrintWriter((new FileOutputStream(
 						file, true /* append = true */)));
-				pWriter.println(district
+				pWriter.println(k
+						+ " "
+						+ district
 						+ " "
 						+ type
 						+ " "
 						+ arena
+						+ " "
 						+ myDate.getYear()
 						+ "/"
 						+ myDate.getMonth()
@@ -206,7 +216,7 @@ public class Reminder extends SherlockListActivity {
 						+ ":"
 						+ ((myDate.getMinutes() + "").length() == 1 ? "0"
 								+ myDate.getMinutes() : myDate.getMinutes()));
-
+				k++;
 				pWriter.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -251,7 +261,7 @@ public class Reminder extends SherlockListActivity {
 				calSet.add(Calendar.DATE, 1);
 			}
 
-			setAlarm(calSet);
+			setAlarm(calSet, mStrings.size());
 		}
 
 	};
@@ -295,6 +305,7 @@ public class Reminder extends SherlockListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		final String item = (String) getListAdapter().getItem(position);
+		Log.i("i", item);
 		final int pos = position;
 		// Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
 		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -302,6 +313,20 @@ public class Reminder extends SherlockListActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
+					String[] a = mStrings.get(pos).split(" ");
+					String[] date = a[4].split("/");
+					String[] time = a[5].split(":");
+					Calendar calNow = Calendar.getInstance();
+					Calendar calSet = (Calendar) calNow.clone();
+
+					calSet.set(Calendar.YEAR, stringToInt(date[0]));
+					calSet.set(Calendar.MONTH, stringToInt(date[1]));
+					calSet.set(Calendar.DATE, stringToInt(date[2]));
+					calSet.set(Calendar.HOUR_OF_DAY, stringToInt(time[0]));
+					calSet.set(Calendar.MINUTE, stringToInt(time[1]));
+					calSet.set(Calendar.SECOND, 0);
+					calSet.set(Calendar.MILLISECOND, 0);
+					cancelAlarm(calSet, pos + 1);
 					mStrings.remove(pos);
 					myArrayAdapter.notifyDataSetChanged();
 					Scanner scanner;
@@ -362,23 +387,34 @@ public class Reminder extends SherlockListActivity {
 				calSet.add(Calendar.DATE, 1);
 			}
 
-			setAlarm(calSet);
+			setAlarm(calSet, mStrings.size());
 		}
 	};
 
-	private void setAlarm(Calendar targetCal) {
-		Log.i("i", targetCal.toString());
+	private void setAlarm(Calendar targetCal, int pos) {
+		Log.i("ipos", pos + "");
 		Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
 		intent.putExtra("1", "la");
 		intent.putExtra("type", type);
 		intent.putExtra("district", district);
 		intent.putExtra("arena", arena);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(
-				getBaseContext(), 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+				getBaseContext(), pos, intent,
+				PendingIntent.FLAG_CANCEL_CURRENT);
 		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		alarmManager.set(AlarmManager.RTC_WAKEUP, targetCal.getTimeInMillis(),
 				pendingIntent);
 
+	}
+
+	private void cancelAlarm(Calendar targetCal, int pos) {
+		Log.i("ipos", pos + "");
+		Intent intent = new Intent(this, AlarmReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pos,
+				intent, 0);
+		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+		alarmManager.cancel(pendingIntent);
 	}
 
 	private void showMyDialogList(final CharSequence[] items) {
@@ -449,4 +485,7 @@ public class Reminder extends SherlockListActivity {
 		return Reminder.context;
 	}
 
+	public int stringToInt(String s) {
+		return Integer.parseInt(s);
+	}
 }

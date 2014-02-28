@@ -30,10 +30,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 		Log.i("hello", "helloKen" + k2.getExtras().getString("1"));
 
 		if (k2.getExtras().getString("1").equals("la")) {
-			//Reminder.mSound = MediaPlayer.create(k1, R.raw.haha);
-			//Reminder.mSound.start();
+			// Reminder.mSound = MediaPlayer.create(k1, R.raw.haha);
+			// Reminder.mSound.start();
 		} else if (k2.getExtras().getString("1").equals("val")) {
-			//Reminder.mSound.stop();
+			// Reminder.mSound.stop();
 			// MainActivity.mSound = null;
 		}
 		// We get a reference to the NotificationManager
@@ -45,10 +45,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 				MyText, System.currentTimeMillis());
 		// The three parameters are: 1. an icon, 2. a title, 3. time when the
 		// notification appears
-		
-		String MyNotificationTitle = k2.getExtras().getString("arena");//"Ken!";
-		String MyNotificationText = k2.getExtras().getString("type") + k2.getExtras().getString("district");
-		
+
+		String MyNotificationTitle = k2.getExtras().getString("arena");// "Ken!";
+		String MyNotificationText = k2.getExtras().getString("type")
+				+ k2.getExtras().getString("district");
+
 		mNotification.vibrate = new long[] { 100, 200, 100, 10000 };
 		Intent MyIntent = new Intent(((ContextWrapper) k1).getBaseContext(),
 				Reminder.class);
@@ -65,9 +66,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 		notificationManager.notify(NOTIFICATION_ID, mNotification);
 		// We are passing the notification to the NotificationManager with a
 		// unique id.
-		  ActivityManager am = (ActivityManager) k1.getSystemService(k1.ACTIVITY_SERVICE);
-		  List<RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-		  ComponentName componentInfo = taskInfo.get(0).topActivity;
+		ActivityManager am = (ActivityManager) k1
+				.getSystemService(k1.ACTIVITY_SERVICE);
+		List<RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+		ComponentName componentInfo = taskInfo.get(0).topActivity;
 
 		Toast.makeText(k1, "Alarm received!", Toast.LENGTH_LONG).show();
 	}

@@ -343,72 +343,81 @@ public class GovActivity extends Activity {
 	}
 
 	private void showUserSettings() {
-		SharedPreferences sharedPrefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		try {
+			SharedPreferences sharedPrefs = PreferenceManager
+					.getDefaultSharedPreferences(this);
 
-		StringBuilder builder = new StringBuilder();
+			StringBuilder builder = new StringBuilder();
 
-		Log.i("\n Username: ", sharedPrefs.getString("prefUsername", "NULL"));
+			Log.i("\n Username: ",
+					sharedPrefs.getString("prefUsername", "NULL"));
 
-		Log.i("i",
-				"\n Send report:"
-						+ sharedPrefs.getBoolean("prefSendReport", false));
+			Log.i("i",
+					"\n Send report:"
+							+ sharedPrefs.getBoolean("prefSendReport", false));
 
-		Log.i("i",
-				"\n Sync Frequency: "
-						+ sharedPrefs.getString("prefSyncFrequency", "NULL"));
-		facility = sharedPrefs.getString("prefSyncFrequency", "NULL");
+			Log.i("i",
+					"\n Sync Frequency: "
+							+ sharedPrefs
+									.getString("prefSyncFrequency", "NULL")); 
 
-		// TextView settingsTextView = (TextView)
-		// findViewById(R.id.textUserSettings);
+			// TextView settingsTextView = (TextView)
+			// findViewById(R.id.textUserSettings);
+			if (!sharedPrefs.getString("prefSyncFrequency", "NULL").equals("NULL")) {
+				facility = sharedPrefs.getString("prefSyncFrequency", "NULL");
+				facilityTextView.setText("最近的" + facility);
+				((Button) findViewById(R.id.button_n1))
+						.setBackgroundResource(chiToEngName(facility));
+				((Button) findViewById(R.id.button_n2))
+						.setBackgroundResource(chiToEngName(facility));
+				((Button) findViewById(R.id.button_n3))
+						.setBackgroundResource(chiToEngName(facility));
 
-		facilityTextView.setText("最近的" + facility);
-		((Button) findViewById(R.id.button_n1))
-				.setBackgroundResource(chiToEngName(facility));
-		((Button) findViewById(R.id.button_n2))
-				.setBackgroundResource(chiToEngName(facility));
-		((Button) findViewById(R.id.button_n3))
-				.setBackgroundResource(chiToEngName(facility));
+				ArrayList<LocationKenKen> closestLoc = new ArrayList<LocationKenKen>();
+				DBHelper dbh = new DBHelper(this);
+				Cursor c = dbh
+						.getKen((Search.switchTable(facility)).toString());
 
-		ArrayList<LocationKenKen> closestLoc = new ArrayList<LocationKenKen>();
-		DBHelper dbh = new DBHelper(this);
-		Cursor c = dbh.getKen((Search.switchTable(facility)).toString());
+				float lat = Float.parseFloat(getIntent().getExtras().get("lat")
+						.toString());
+				float log = Float.parseFloat(getIntent().getExtras().get("log")
+						.toString());
 
-		float lat = Float.parseFloat(getIntent().getExtras().get("lat")
-				.toString());
-		float log = Float.parseFloat(getIntent().getExtras().get("log")
-				.toString());
+				// gps2m(lat, log, float lat_b, float lng_b)
+				// double min = 99999999;
 
-		// gps2m(lat, log, float lat_b, float lng_b)
-		// double min = 99999999;
+				while (c.moveToNext()) {
+					// if (c.getString(c.getColumnIndex("DISTRICT")).equals(
+					// getIntent().getExtras().get("district").toString())) {
 
-		while (c.moveToNext()) {
-			// if (c.getString(c.getColumnIndex("DISTRICT")).equals(
-			// getIntent().getExtras().get("district").toString())) {
+					String locationLat = c.getString(c.getColumnIndex("LAT"));
+					String locationLong = c.getString(c.getColumnIndex("LONG"));
+					String chi = c.getString(c.getColumnIndex("CHINAME"));
+					String e = c.getString(c.getColumnIndex("ENGNAME"));
+					String d = c.getString(c.getColumnIndex("DISTRICT"));
 
-			String locationLat = c.getString(c.getColumnIndex("LAT"));
-			String locationLong = c.getString(c.getColumnIndex("LONG"));
-			String chi = c.getString(c.getColumnIndex("CHINAME"));
-			String e = c.getString(c.getColumnIndex("ENGNAME"));
-			String d = c.getString(c.getColumnIndex("DISTRICT"));
+					// LocationKenKen
+					double dis = gps2m(lat, log, Float.parseFloat(locationLat),
+							Float.parseFloat(locationLong));
 
-			// LocationKenKen
-			double dis = gps2m(lat, log, Float.parseFloat(locationLat),
-					Float.parseFloat(locationLong));
+					closestLoc.add(new LocationKenKen(Float
+							.parseFloat(locationLat), Float
+							.parseFloat(locationLong), dis, chi, d));
 
-			closestLoc.add(new LocationKenKen(Float.parseFloat(locationLat),
-					Float.parseFloat(locationLong), dis, chi, d));
+					// }
+				}
 
-			// }
+				Collections.sort(closestLoc);
+				for (int i = 0; i < 3; i++)
+					Log.i("i", closestLoc.get(i).toString());
+
+				no1.setText(niceString(closestLoc.get(0).getChiname()));
+				no2.setText(niceString(closestLoc.get(1).getChiname()));
+				no3.setText(niceString(closestLoc.get(2).getChiname()));
+			}
+		} catch (Exception e) {
+
 		}
-
-		Collections.sort(closestLoc);
-		for (int i = 0; i < 3; i++)
-			Log.i("i", closestLoc.get(i).toString());
-
-		no1.setText(niceString(closestLoc.get(0).getChiname()));
-		no2.setText(niceString(closestLoc.get(1).getChiname()));
-		no3.setText(niceString(closestLoc.get(2).getChiname()));
 		// settingsTextView.setText(builder.toString());
 	}
 
@@ -428,7 +437,7 @@ public class GovActivity extends Activity {
 			return R.drawable.golf;
 		} else if (s.equals("攀石場")) {
 			return R.drawable.climbwall;
-		} else if (s.equals("健身室")){
+		} else if (s.equals("健身室")) {
 			return R.drawable.gym;
 		}
 		return -1;
