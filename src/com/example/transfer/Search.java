@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -222,7 +223,8 @@ public class Search extends FragmentActivity {
 						.getColumnIndex("LAT"))), Double.parseDouble(c
 						.getString(c.getColumnIndex("LONG"))));
 				// Double.parseDouble(temp[3]));
-				mMap.addMarker(new MarkerOptions().position(hk)
+				mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.marker)).position(hk)
 						.title(c.getString(c.getColumnIndex("CHINAME")))
 						.snippet(c.getString(c.getColumnIndex("DISTRICT"))));// .title(temp[1])
 				// .snippet(temp[4]));

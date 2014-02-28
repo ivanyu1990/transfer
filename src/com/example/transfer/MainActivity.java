@@ -18,7 +18,6 @@ package com.example.transfer;
 
 //import com.example.android.location.LocationUtils;
 
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -103,7 +102,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 	// Handle to SharedPreferences for this app
 	SharedPreferences mPrefs;
 	GPSTracker gps;
-	
+
 	// Handle to a SharedPreferences editor
 	SharedPreferences.Editor mEditor;
 
@@ -121,8 +120,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.activity_main);
 
@@ -166,28 +164,17 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 			}
 		}).start();
 
-		/*b = new Thread(new Runnable() {
-			public void run() {
-				while (progressStatus < 100) {
-					// progressStatus += 1;
-					// Update the progress bar and display the current value in
-					// the text view
-					handler.post(new Runnable() {
-						public void run() {
-							progressBar.setProgress(progressStatus);
-							// textView.setText(progressStatus+"/"+progressBar.getMax());
-						}
-					});
-					// try {
-					// // Sleep for 200 milliseconds. Just to display the
-					// progress slowly
-					// Thread.sleep(200);
-					// } catch (InterruptedException e) {
-					// e.printStackTrace();
-					// }
-				}
-			}
-		});*/
+		/*
+		 * b = new Thread(new Runnable() { public void run() { while
+		 * (progressStatus < 100) { // progressStatus += 1; // Update the
+		 * progress bar and display the current value in // the text view
+		 * handler.post(new Runnable() { public void run() {
+		 * progressBar.setProgress(progressStatus); //
+		 * textView.setText(progressStatus+"/"+progressBar.getMax()); } }); //
+		 * try { // // Sleep for 200 milliseconds. Just to display the //
+		 * progress slowly // Thread.sleep(200); // } catch
+		 * (InterruptedException e) { // e.printStackTrace(); // } } } });
+		 */
 
 		/*
 		 * Set the update interval
@@ -223,19 +210,19 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 			public void onClick(View v) {
 
 				gps = new GPSTracker(MainActivity.this);
-				 if(gps.canGetLocation()){
-			        		        	
-			        	// \n is for new line
-			        	//Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();	
-			        }else{
-			        	// can't get location
-			        	// GPS or Network is not enabled
-			        	// Ask user to enable GPS/network in settings
-			        	gps.showSettingsAlert();
-			        }
-				
-				
-				
+				if (gps.canGetLocation()) {
+
+					// \n is for new line
+					// Toast.makeText(getApplicationContext(),
+					// "Your Location is - \nLat: " + latitude + "\nLong: " +
+					// longitude, Toast.LENGTH_LONG).show();
+				} else {
+					// can't get location
+					// GPS or Network is not enabled
+					// Ask user to enable GPS/network in settings
+					gps.showSettingsAlert();
+				}
+
 				String district = null;
 				String address = null;
 				String lat = null;
@@ -246,7 +233,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 					startPeriodicUpdates();
 					try {
 						a.start();
-						// Theard b = new Thread ().sleep(5000);
+						Thread.sleep(5000);
 
 					} catch (Exception e) {
 
@@ -272,7 +259,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 								+ "&sensor=true&language=zh-TW";
 						lat = curloc[0].trim();
 						log = curloc[1].trim();
-						//progressBar.setProgress(50);
+						// progressBar.setProgress(50);
 
 						JSONParser jsp = new JSONParser();
 						Log.i("hihihi",

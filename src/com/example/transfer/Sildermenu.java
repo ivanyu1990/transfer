@@ -13,6 +13,7 @@ import java.util.Locale;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 //import com.myapp.venuemap.R;
@@ -70,9 +71,8 @@ public class Sildermenu extends FragmentActivity {
 		mTitle = mDrawerTitle = getTitle();
 		mPlanetTitles = getResources().getStringArray(R.array.planets_array);
 		// added====
-		String[] mymPlanetTitles2 = { "網球場", "籃球場", "羽毛球場",
-				"攀石場", "高爾夫球場", "乒乓球場", "健身室",
-				"游泳池" };
+		String[] mymPlanetTitles2 = { "網球場", "籃球場", "羽毛球場", "攀石場", "高爾夫球場",
+				"乒乓球場", "健身室", "游泳池" };
 		String[] mymPlanetTitles2mapping = { "TENNIS_COURT", "BASKET_COURT",
 				"BADMINTON", "CLIMB", "GOLF", "TABLE_TENNIS", "FITNESS",
 				"SWIMMING_POOL" };
@@ -157,15 +157,14 @@ public class Sildermenu extends FragmentActivity {
 		switch (item.getItemId()) {
 		case R.id.action_websearch:
 			// create intent to perform web search for this planet
-			//Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-			//intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+			// Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+			// intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
 			// catch event that there's no activity to handle intent
-			/*if (intent.resolveActivity(getPackageManager()) != null) {
-				startActivity(intent);
-			} else {
-				Toast.makeText(this, R.string.app_not_available,
-						Toast.LENGTH_LONG).show();
-			}*/
+			/*
+			 * if (intent.resolveActivity(getPackageManager()) != null) {
+			 * startActivity(intent); } else { Toast.makeText(this,
+			 * R.string.app_not_available, Toast.LENGTH_LONG).show(); }
+			 */
 			startActivity(new Intent(this, Search.class));
 			return true;
 		default:
@@ -297,14 +296,16 @@ public class Sildermenu extends FragmentActivity {
 		 * //updateMaker(0); } dbh.close();
 		 */
 
-		/*LatLng hk = new LatLng(Double.parseDouble(""
-				+ c.getString(c.getColumnIndex("LAT"))), Double.parseDouble(""
-				+ c.getString(c.getColumnIndex("LONG"))));
-		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hk, 13));
-		mMap.addMarker(new MarkerOptions().position(hk)
-				.title(c.getString(c.getColumnIndex("CHINAME")))
-				.snippet(c.getString(c.getColumnIndex("DISTRICT"))));
-		// updateMaker(0); } dbh.close();*/
+		/*
+		 * LatLng hk = new LatLng(Double.parseDouble("" +
+		 * c.getString(c.getColumnIndex("LAT"))), Double.parseDouble("" +
+		 * c.getString(c.getColumnIndex("LONG"))));
+		 * mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hk, 13));
+		 * mMap.addMarker(new MarkerOptions().position(hk)
+		 * .title(c.getString(c.getColumnIndex("CHINAME")))
+		 * .snippet(c.getString(c.getColumnIndex("DISTRICT")))); //
+		 * updateMaker(0); } dbh.close();
+		 */
 		updateMaker(0);
 	}
 
@@ -324,42 +325,53 @@ public class Sildermenu extends FragmentActivity {
 		DBHelper dbh = new DBHelper(this);
 		// Cursor c = dbh.getKen(cat);
 		Cursor c = dbh.getKen(cat);
-		
+
 		c.moveToFirst();
-		
+
 		Log.i("i",
 				"HelloKen" + c.getString(c.getColumnIndex("DISTRICT"))
 						+ c.getString(c.getColumnIndex("LAT"))
 						+ c.getString(c.getColumnIndex("LONG")));
 		String temp = c.getString(c.getColumnIndex("DISTRICT"));
 		LatLng hk = new LatLng(Double.parseDouble(""
-				+ c.getString(c.getColumnIndex("LAT"))),
-				Double.parseDouble(""
-						+ c.getString(c.getColumnIndex("LONG"))));
+				+ c.getString(c.getColumnIndex("LAT"))), Double.parseDouble(""
+				+ c.getString(c.getColumnIndex("LONG"))));
 		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hk, 13));
-		mMap.addMarker(new MarkerOptions().position(hk)
-				.title(c.getString(c.getColumnIndex("CHINAME")))
+		mMap.addMarker(new MarkerOptions()
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+				.position(hk).title(c.getString(c.getColumnIndex("CHINAME")))
 				.snippet(c.getString(c.getColumnIndex("DISTRICT"))));
-		
+		// marker.icon(BitmapDescriptorFactory
+		// .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(22.3,
+				114.18), 12));
 		while (c.moveToNext()) {
-			//if (c.getString(c.getColumnIndex("DISTRICT")).equals(district)) {
-			//please do district comparision in english
-				Log.i("i",
-						"HelloKen" + c.getString(c.getColumnIndex("DISTRICT"))
-								+ c.getString(c.getColumnIndex("LAT"))
-								+ c.getString(c.getColumnIndex("LONG")));
-				//String temp = c.getString(c.getColumnIndex("DISTRICT"));
+			// if (c.getString(c.getColumnIndex("DISTRICT")).equals(district)) {
+			// please do district comparision in english
+			Log.i("i",
+					"HelloKen" + c.getString(c.getColumnIndex("DISTRICT"))
+							+ c.getString(c.getColumnIndex("LAT"))
+							+ c.getString(c.getColumnIndex("LONG")));
+			// String temp = c.getString(c.getColumnIndex("DISTRICT"));
 
-				LatLng hk2 = new LatLng(Double.parseDouble(""
-						+ c.getString(c.getColumnIndex("LAT"))),
-						Double.parseDouble(""
-								+ c.getString(c.getColumnIndex("LONG"))));
-				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hk, 13));
+			LatLng hk2 = new LatLng(Double.parseDouble(""
+					+ c.getString(c.getColumnIndex("LAT"))),
+					Double.parseDouble(""
+							+ c.getString(c.getColumnIndex("LONG"))));
+			if (Search.switchDistrict(district).equals(
+					c.getString(c.getColumnIndex("DISTRICT")))) {
+				mMap.addMarker(new MarkerOptions()
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.marker)).position(hk2)
+						.title(c.getString(c.getColumnIndex("CHINAME")))
+						.snippet(c.getString(c.getColumnIndex("DISTRICT"))));
+			} else {
 				mMap.addMarker(new MarkerOptions().position(hk2)
 						.title(c.getString(c.getColumnIndex("CHINAME")))
 						.snippet(c.getString(c.getColumnIndex("DISTRICT"))));
-				// updateMaker(0);
-			//}
+			}
+			// updateMaker(0);
+			// }
 		}
 		dbh.close();
 	}
