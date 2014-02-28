@@ -245,6 +245,9 @@ public class GovActivity extends Activity {
 		Intent i = new Intent(this, Sildermenu.class);
 		i.putExtra("district", getIntent().getExtras().get("district")
 				.toString());
+		// getIntent().getExtras().get("lat")
+		i.putExtra("lat", getIntent().getExtras().get("lat").toString());
+		i.putExtra("log", getIntent().getExtras().get("log").toString());
 		startActivity(i);
 	}
 
@@ -359,11 +362,12 @@ public class GovActivity extends Activity {
 			Log.i("i",
 					"\n Sync Frequency: "
 							+ sharedPrefs
-									.getString("prefSyncFrequency", "NULL")); 
+									.getString("prefSyncFrequency", "NULL"));
 
 			// TextView settingsTextView = (TextView)
 			// findViewById(R.id.textUserSettings);
-			if (!sharedPrefs.getString("prefSyncFrequency", "NULL").equals("NULL")) {
+			if (!sharedPrefs.getString("prefSyncFrequency", "NULL").equals(
+					"NULL")) {
 				facility = sharedPrefs.getString("prefSyncFrequency", "NULL");
 				facilityTextView.setText("最近的" + facility);
 				((Button) findViewById(R.id.button_n1))

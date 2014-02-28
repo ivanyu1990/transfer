@@ -336,15 +336,17 @@ public class Sildermenu extends FragmentActivity {
 		LatLng hk = new LatLng(Double.parseDouble(""
 				+ c.getString(c.getColumnIndex("LAT"))), Double.parseDouble(""
 				+ c.getString(c.getColumnIndex("LONG"))));
-		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hk, 13));
+		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+				new LatLng(Double.parseDouble(getIntent().getExtras()
+						.get("lat").toString()), Double.parseDouble(getIntent()
+						.getExtras().get("log").toString())), 14));
 		mMap.addMarker(new MarkerOptions()
 				.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
 				.position(hk).title(c.getString(c.getColumnIndex("CHINAME")))
 				.snippet(c.getString(c.getColumnIndex("DISTRICT"))));
 		// marker.icon(BitmapDescriptorFactory
 		// .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(22.3,
-				114.18), 12));
+
 		while (c.moveToNext()) {
 			// if (c.getString(c.getColumnIndex("DISTRICT")).equals(district)) {
 			// please do district comparision in english
