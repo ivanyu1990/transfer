@@ -6,7 +6,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ *  
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -44,7 +44,7 @@
         android:allowBackup="true"
         android:description="@string/app_description"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/app_name1"
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -96,7 +96,7 @@
         
         <activity
             android:name="com.example.transfer.SplashScreen"
-            android:label="@string/app_name"
+            android:label="@string/app_name1"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
@@ -105,6 +105,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+    		android:name="com.google.zxing.client.android.CaptureActivity"	
+              android:screenOrientation="sensorLandscape"
+              android:clearTaskOnLaunch="true"
+              android:stateNotNeeded="true"
+              android:configChanges="orientation|keyboardHidden"
+              android:theme="@style/CaptureTheme"
+              android:windowSoftInputMode="stateAlwaysHidden">
+    	<intent-filter>
+        	<action android:name="com.google.zxing.client.android.CaptureActivity.CaptureActivity" />
+    	</intent-filter>
+		</activity>
 
         <receiver
             android:name=".AlarmReceiver"

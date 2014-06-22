@@ -160,11 +160,6 @@
                 android:layout_marginLeft="3dp"
                 android:background="@drawable/new_button"
                 android:textColor="@android:color/black" />
-            
-            
-            
-            
-            
 
             <Button
                 android:id="@+id/button_d"

@@ -17,6 +17,7 @@
 <resources>
     <!-- Application identifiers -->
     <string name="app_name">康體一站通</string>
+    <string name="app_name1">康體一站通</string>
     <string name="app_tag">康體一站通</string>
     <string name="app_description">
         Displays current address and current or updated location using HK government services

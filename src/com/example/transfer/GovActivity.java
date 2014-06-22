@@ -3,6 +3,8 @@ package com.example.transfer;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.google.zxing.client.android.CaptureActivity;
+
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
